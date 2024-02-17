@@ -1,13 +1,14 @@
 import os,pickle
-from langchain.llms.google_palm import GooglePalm
+from langchain_google_genai import GoogleGenerativeAI
 from langchain.chains import RetrievalQAWithSourcesChain
 
 
 from dotenv import load_dotenv
 load_dotenv()
 
+
+llm = GoogleGenerativeAI(model="models/text-bison-001",google_api_key = os.environ['GOOGLE_API_KEY'],temperature=0.1)
 file_path = "vectorstore.pkl"
-llm = GooglePalm(google_api_key = os.environ['GOOGLE_API_KEY'],temperature=0.1)
 
 def rag_query(question):
     if os.path.exists(file_path):

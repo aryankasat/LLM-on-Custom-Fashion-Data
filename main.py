@@ -4,9 +4,9 @@ from internet_query import rag_query
 import pickle
 import time
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import UnstructuredURLLoader
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores.faiss import FAISS
 
 col1,col2 = st.columns(2)
 
