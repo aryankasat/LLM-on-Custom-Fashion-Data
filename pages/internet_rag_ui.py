@@ -18,8 +18,8 @@ for i in range(2):
     urls.append(url)
 
 process_url  = st.sidebar.button("Process URLs")
-left_page = st.empty
-if process_url!= None:
+left_page = st.empty()
+if process_url:
     # load data
     loader = UnstructuredURLLoader(urls=urls)
     left_page.text("Loading of data✅...")
@@ -33,7 +33,10 @@ if process_url!= None:
     docs = text_splitter.split_documents(data)
     # create embeddings and save it to FAISS index
     embeddings = HuggingFaceEmbeddings()
-    vectorstore = FAISS.from_documents(docs, embeddings)
+    text_embeddings = embeddings.embed_documents(docs)
+    text_embedding_pairs = zip(docs, text_embeddings)
+    text_embedding_pairs_list = list(text_embedding_pairs)
+    vectorstore = FAISS.from_embeddings(text_embedding_pairs_list, embeddings)
     left_page.text("Creating vector embedding✅...")
     time.sleep(2)
 
@@ -42,17 +45,17 @@ if process_url!= None:
         pickle.dump(vectorstore, f)
 
 
-question = left_page.text_input("Question:")
+    question = left_page.text_input("Question:")
 
-if question!=None:
-    result = rag_query(question)
-    left_page.header("Answer:")
-    left_page.write(result['answer'])
+    if question!=None:
+        result = rag_query(question)
+        left_page.header("Answer:")
+        left_page.write(result['answer'])
 
-    #displaying of the sources
-    sources = result.get("sources","")
-    if sources is not None:
-        left_page.subheader("Source of answer:")
-        sources_list = sources.split("\n")
-        for source in sources_list:
-            left_page.write(source)
+        #displaying of the sources
+        sources = result.get("sources","")
+        if sources is not None:
+            left_page.subheader("Source of answer:")
+            sources_list = sources.split("\n")
+            for source in sources_list:
+                left_page.write(source)

@@ -9,4 +9,6 @@ if question:
     chain = get_few_shot_db_chain()
     answer = chain.invoke({"question":question})
     st.header("Output:")
-    st.write(answer)
+    index = answer.find("Answer")
+    final_ans = answer[index+len("Answer")+1:]
+    st.write(final_ans)
