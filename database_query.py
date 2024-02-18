@@ -1,6 +1,6 @@
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_community.utilities.sql_database import SQLDatabase
-from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain.chains import create_sql_query_chain
 from langchain.prompts import SemanticSimilarityExampleSelector, FewShotPromptTemplate
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores.chroma import Chroma
@@ -61,7 +61,7 @@ def get_few_shot_db_chain():
         input_variables=["input","table_info","top_k"],
     )
 
-    chain = SQLDatabaseChain.from_llm(llm, database, verbose=True,prompt=few_shot_prompt)
+    chain = create_sql_query_chain(llm, database,prompt=few_shot_prompt)
     return chain
 
 
