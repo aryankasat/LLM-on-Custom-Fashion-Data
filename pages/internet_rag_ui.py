@@ -1,15 +1,13 @@
 import streamlit as st
 from internet_query import rag_query
-import pickle
-import time
+import pickle,time
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import UnstructuredURLLoader
-from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.huggingface import HuggingFaceBgeEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 
 st.title ("Internet Q&A")
 
-file_path = "faiss.pkl"
 st.sidebar.title("Fashion Article URLs")
 
 urls=[]
@@ -18,7 +16,9 @@ for i in range(2):
     urls.append(url)
 
 process_url  = st.sidebar.button("Process URLs")
+file_path = "faiss.pkl"
 left_page = st.empty()
+
 if process_url:
     # load data
     loader = UnstructuredURLLoader(urls=urls)
@@ -32,30 +32,17 @@ if process_url:
     left_page.text("Splitting data into chunks✅...")
     docs = text_splitter.split_documents(data)
     # create embeddings and save it to FAISS index
-    embeddings = HuggingFaceEmbeddings()
-    text_embeddings = embeddings.embed_documents(docs)
-    text_embedding_pairs = zip(docs, text_embeddings)
-    text_embedding_pairs_list = list(text_embedding_pairs)
-    vectorstore = FAISS.from_embeddings(text_embedding_pairs_list, embeddings)
+    embeddings = HuggingFaceBgeEmbeddings(model_name = 'sentence-transformers/all-MiniLM-L6-v2')
+    vectorstore = FAISS.from_documents(docs, embeddings)
     left_page.text("Creating vector embedding✅...")
-    time.sleep(2)
-
     # Save the FAISS index to a pickle file
     with open(file_path, "wb") as f:
         pickle.dump(vectorstore, f)
 
 
-    question = left_page.text_input("Question:")
+question = st.text_input("Question:")
 
-    if question!=None:
-        result = rag_query(question)
-        left_page.header("Answer:")
-        left_page.write(result['answer'])
-
-        #displaying of the sources
-        sources = result.get("sources","")
-        if sources is not None:
-            left_page.subheader("Source of answer:")
-            sources_list = sources.split("\n")
-            for source in sources_list:
-                left_page.write(source)
+if question:
+    result = rag_query(question)
+    st.header("Answer:")
+    st.write(result['result'])
