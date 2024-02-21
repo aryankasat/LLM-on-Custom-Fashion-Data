@@ -6,7 +6,6 @@ from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores.chroma import Chroma
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX, _mysql_prompt
 from langchain.prompts.prompt import PromptTemplate
-from langchain.chains.sql_database.prompt import SQLDatabaseChain
 import os
 from few_shots import few_shots
 
@@ -16,7 +15,7 @@ load_dotenv()
 def get_few_shot_db_chain():
     db_user = "root"
     db_password = "Aruboi2001!"
-    db_host = "localhost"
+    db_host = "localhost:3306"
     db_name = "tshirts"
 
     database = SQLDatabase.from_uri (f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}",
@@ -64,9 +63,3 @@ def get_few_shot_db_chain():
 
     chain = create_sql_query_chain(llm, database,prompt=few_shot_prompt)
     return chain
-
-
-
-
-
-
