@@ -1,6 +1,5 @@
 import os,pickle
 from langchain_google_genai import GoogleGenerativeAI
-from langchain.chains.qa_with_sources.retrieval import RetrievalQAWithSourcesChain
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_core.vectorstores import VectorStoreRetriever
 

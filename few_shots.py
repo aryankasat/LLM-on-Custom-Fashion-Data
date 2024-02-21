@@ -30,5 +30,11 @@ group by t_shirt_id) a left join discounts on a.t_shirt_id = discounts.t_shirt_i
  """,
      'SQLResult': "Result of the SQL query",
      'Answer' : "6699.6"
+    },
+    {
+        'Question':"how many grey t-shirts do we have?",
+        'SQLQuery':"SELECT sum(stock_quantity) FROM t_shirts WHERE color ='Grey'",
+        'SQLResult':"Result of the SQL query",
+        'Answer':"569"
     }
 ]

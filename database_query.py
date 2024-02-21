@@ -6,6 +6,7 @@ from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores.chroma import Chroma
 from langchain.chains.sql_database.prompt import PROMPT_SUFFIX, _mysql_prompt
 from langchain.prompts.prompt import PromptTemplate
+from langchain.chains.sql_database.prompt import SQLDatabaseChain
 import os
 from few_shots import few_shots
 
