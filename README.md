@@ -43,3 +43,6 @@ streamlit run main.py
     * internet_rag_ui.py - Contains the  UI for the RAG based outputs as well as used for chunking of data from the urls
 
 ## Output Demo
+https://github.com/aryankasat/LLM-on-Custom-Fashion-Data/assets/33005008/1538871d-d21d-4b84-8b5a-cfdc1d656fd7
+
+
